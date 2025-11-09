@@ -56,10 +56,5 @@ public class SinhVienDB extends SQLiteOpenHelper {
         db.close();
         return i;
     }
-    public List<Deparment> getAll() {
-        SQLiteDatabase db = getReadableDatabase();
-        List<Deparment> deparmentList = new ArrayList<>();
-        Cursor cr = db.rawQuery("Select * from deparment", new String[]{});
 
-    }
 }
