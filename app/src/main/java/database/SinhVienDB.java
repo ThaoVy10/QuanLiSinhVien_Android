@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cr424s.hothithaovy.studentmanager.Department;
+import cr424s.hothithaovy.studentmanager.SinhVien;
 
 public class SinhVienDB extends SQLiteOpenHelper {
 
@@ -95,10 +96,10 @@ public class SinhVienDB extends SQLiteOpenHelper {
         if (cs.moveToFirst()) {
             do {
                 Department khoa = new Department(
-                        cs.getString(0),
-                        cs.getString(1),
-                        cs.getString(2),
-                        cs.getInt(3)
+                        cs.getString(0), //maKhoa
+                        cs.getString(1), //tenKhoa
+                        cs.getString(2), //diaChi
+                        cs.getInt(3)     //sdt
                 );
                 list.add(khoa);
             } while (cs.moveToNext());
@@ -122,4 +123,100 @@ public class SinhVienDB extends SQLiteOpenHelper {
         db.delete("Khoa", null, null);
         db.close();
     }
+
+    public long themSV(SinhVien sv) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("maSV",sv.getMaSV());
+        values.put("tenSV",sv.getHoTen());
+        values.put("sdt",sv.getSdt());
+        values.put("email",sv.getEmail());
+        values.put("ngaySinh",sv.getNgaySinh());
+        values.put("khoa",sv.getKhoa());
+        values.put("gioiTinh",sv.getGioitinh());
+        values.put("soThich",sv.getSothich());
+        long i = db.insert("SinhVien", null,values);
+        db.close();
+        return i;
+    }
+    public void suaTTSV(SinhVien sv) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("maSV",sv.getMaSV());
+        values.put("tenSV",sv.getHoTen());
+        values.put("sdt",sv.getSdt());
+        values.put("email",sv.getEmail());
+        values.put("ngaySinh",sv.getNgaySinh());
+        values.put("khoa",sv.getKhoa());
+        values.put("gioiTinh",sv.getGioitinh());
+        values.put("soThich",sv.getSothich());
+        int rows = db.update("SinhVien", values, "maSV = ?", new String[]{sv.getMaSV()});
+        db.close();
+    }
+    public List<SinhVien> getAllSinhVien() {
+        SQLiteDatabase db = getReadableDatabase();
+        List<SinhVien> list = new ArrayList<>();
+
+        Cursor cs = db.rawQuery("SELECT * FROM SinhVien", null);
+        Log.i("DB_DEBUG", "Tổng số sinh viên: " + cs.getCount());
+
+        if (cs.moveToFirst()) {
+            do {
+                SinhVien sv = new SinhVien(
+                        cs.getString(0),  // maSV
+                        cs.getString(1),  // hoTen
+                        cs.getString(2),  // ngaySinh
+                        cs.getString(3),  // gioiTinh
+                        cs.getString(4),  // diaChi
+                        cs.getString(5),  // soDienThoai
+                        cs.getString(6),  // soThich
+                        cs.getString(7)   // maKhoa
+                );
+                list.add(sv);
+            } while (cs.moveToNext());
+        }
+        cs.close();
+        db.close();
+        return list;
+    }
+
+    // Lấy sinh viên theo mã
+    public SinhVien getSinhVienTheoMa(String maSV) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cs = db.rawQuery("SELECT * FROM SinhVien WHERE maSV = ?", new String[]{maSV});
+
+        SinhVien sv = null;
+        if (cs.moveToFirst()) {
+            sv = new SinhVien(
+                    cs.getString(0),
+                    cs.getString(1),
+                    cs.getString(2),
+                    cs.getString(3),
+                    cs.getString(4),
+                    cs.getString(5),
+                    cs.getString(6),
+                    cs.getString(7)
+            );
+        }
+
+        cs.close();
+        db.close();
+        return sv;
+    }
+
+    // Xóa toàn bộ sinh viên
+    public void xoaTatCaSinhVien() {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete("SinhVien", null, null);
+        db.close();
+    }
+    // Xóa sinh viên theo mã
+    public boolean xoaSinhVienTheoMa(String maSV) {
+        SQLiteDatabase db = getWritableDatabase();
+        int rowsDeleted = db.delete("SinhVien", "maSV = ?", new String[]{maSV});
+        db.close();
+        return rowsDeleted > 0;
+    }
+
+
 }

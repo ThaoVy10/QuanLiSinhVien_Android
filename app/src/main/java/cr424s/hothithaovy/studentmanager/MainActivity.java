@@ -112,4 +112,6 @@ public class MainActivity extends AppCompatActivity {
         danhSachSinhVien.add(new SinhVien("Huỳnh Văn I", "SV009", "0909012345", "vani09@gmail.com", "10/09/2003", "Công Nghệ Phần Mềm", "Nam", "Âm nhạc"));
         danhSachSinhVien.add(new SinhVien("Phan Thị K", "SV010", "0900123456", "thik10@gmail.com", "11/10/2002", "Công Nghệ Phần Mềm", "Nữ", "Đọc sách"));
     }
+
+
 }
