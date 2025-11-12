@@ -42,9 +42,6 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        SinhVienDB db = new SinhVienDB(MainActivity.this, "SinhVienDB",null,1);
-                    db.themKhoa("Trí tuệ nhân tạo","123ab","1234567890");
-
         edtTimKiem = findViewById(R.id.edtTimKiem);
         khoiTaoDuLieu();
         listView = findViewById(R.id.listView);

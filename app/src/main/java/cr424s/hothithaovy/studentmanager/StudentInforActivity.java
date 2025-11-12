@@ -2,6 +2,7 @@ package cr424s.hothithaovy.studentmanager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -50,6 +51,8 @@ public class StudentInforActivity extends AppCompatActivity {
         cbReadBook = findViewById(R.id.docsach);
         rbtNam = findViewById(R.id.nam);
         rbtNu = findViewById(R.id.nu);
+        ArrayAdapter<String> adapterKhoa = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, KHOA);
+        spKhoa.setAdapter(adapterKhoa);
 
         SinhVien sinhVien = (SinhVien) getIntent().getSerializableExtra("k_sinhvien");
         if (sinhVien != null) {
@@ -64,6 +67,7 @@ public class StudentInforActivity extends AppCompatActivity {
                     break;
                 }
             }
+            spKhoa.setEnabled(false);
 
             if ("Nam".equalsIgnoreCase(sinhVien.getGioitinh())) rbtNam.setChecked(true);
             else if ("Nữ".equalsIgnoreCase(sinhVien.getGioitinh())) rbtNu.setChecked(true);
