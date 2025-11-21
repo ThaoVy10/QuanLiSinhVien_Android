@@ -31,7 +31,7 @@ public class SinhVienDB extends SQLiteOpenHelper {
             "    hoTen TEXT NOT NULL,\n" +
             "    ngaySinh TEXT,\n" +
             "    gioiTinh TEXT,\n" +
-            "    diaChi TEXT,\n" +
+            "    email TEXT,\n" +
             "    soDienThoai TEXT,\n" +
             "    soThich TEXT,\n" +
             "    maKhoa TEXT,\n" +
@@ -99,7 +99,7 @@ public class SinhVienDB extends SQLiteOpenHelper {
                         cs.getString(0), //maKhoa
                         cs.getString(1), //tenKhoa
                         cs.getString(2), //diaChi
-                        cs.getInt(3)     //sdt
+                        cs.getString(3)  //sdt
                 );
                 list.add(khoa);
             } while (cs.moveToNext());
@@ -127,29 +127,29 @@ public class SinhVienDB extends SQLiteOpenHelper {
     public long themSV(SinhVien sv) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("maSV",sv.getMaSV());
-        values.put("tenSV",sv.getHoTen());
-        values.put("sdt",sv.getSdt());
-        values.put("email",sv.getEmail());
-        values.put("ngaySinh",sv.getNgaySinh());
-        values.put("khoa",sv.getKhoa());
-        values.put("gioiTinh",sv.getGioitinh());
-        values.put("soThich",sv.getSothich());
-        long i = db.insert("SinhVien", null,values);
+        values.put("maSV", sv.getMaSV());
+        values.put("hoTen", sv.getHoTen());
+        values.put("ngaySinh", sv.getNgaySinh());
+        values.put("gioiTinh", sv.getGioitinh());
+        values.put("email", sv.getEmail());
+        values.put("soDienThoai", sv.getSdt());
+        values.put("soThich", sv.getSothich());
+        values.put("maKhoa", sv.getKhoa());
+        long i = db.insert("SinhVien", null, values);
         db.close();
         return i;
     }
     public void suaTTSV(SinhVien sv) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("maSV",sv.getMaSV());
-        values.put("tenSV",sv.getHoTen());
-        values.put("sdt",sv.getSdt());
-        values.put("email",sv.getEmail());
-        values.put("ngaySinh",sv.getNgaySinh());
-        values.put("khoa",sv.getKhoa());
-        values.put("gioiTinh",sv.getGioitinh());
-        values.put("soThich",sv.getSothich());
+        values.put("maSV", sv.getMaSV());
+        values.put("hoTen", sv.getHoTen());
+        values.put("ngaySinh", sv.getNgaySinh());
+        values.put("gioiTinh", sv.getGioitinh());
+        values.put("email", sv.getEmail());
+        values.put("soDienThoai", sv.getSdt());
+        values.put("soThich", sv.getSothich());
+        values.put("maKhoa", sv.getKhoa());
         int rows = db.update("SinhVien", values, "maSV = ?", new String[]{sv.getMaSV()});
         db.close();
     }
@@ -163,14 +163,14 @@ public class SinhVienDB extends SQLiteOpenHelper {
         if (cs.moveToFirst()) {
             do {
                 SinhVien sv = new SinhVien(
-                        cs.getString(0),  // maSV
-                        cs.getString(1),  // hoTen
-                        cs.getString(2),  // ngaySinh
-                        cs.getString(3),  // gioiTinh
-                        cs.getString(4),  // diaChi
-                        cs.getString(5),  // soDienThoai
-                        cs.getString(6),  // soThich
-                        cs.getString(7)   // maKhoa
+                        cs.getString(0), // maSV
+                        cs.getString(1), // hoTen
+                        cs.getString(5), // soDienThoai
+                        cs.getString(4), // email
+                        cs.getString(2), // ngaySinh
+                        cs.getString(7), // maKhoa
+                        cs.getString(3), // gioiTinh
+                        cs.getString(6)  // soThich
                 );
                 list.add(sv);
             } while (cs.moveToNext());
@@ -188,17 +188,16 @@ public class SinhVienDB extends SQLiteOpenHelper {
         SinhVien sv = null;
         if (cs.moveToFirst()) {
             sv = new SinhVien(
-                    cs.getString(0),
-                    cs.getString(1),
-                    cs.getString(2),
-                    cs.getString(3),
-                    cs.getString(4),
-                    cs.getString(5),
-                    cs.getString(6),
-                    cs.getString(7)
+                    cs.getString(0), // maSV
+                    cs.getString(1), // hoTen
+                    cs.getString(5), // soDienThoai
+                    cs.getString(4), // email
+                    cs.getString(2), // ngaySinh
+                    cs.getString(7), // maKhoa
+                    cs.getString(3), // gioiTinh
+                    cs.getString(6)  // soThich
             );
         }
-
         cs.close();
         db.close();
         return sv;
@@ -217,6 +216,8 @@ public class SinhVienDB extends SQLiteOpenHelper {
         db.close();
         return rowsDeleted > 0;
     }
-
+    public boolean kiemTraMaSV(String maSV) {
+        return getSinhVienTheoMa(maSV) != null;
+    }
 
 }

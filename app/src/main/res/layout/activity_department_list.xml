@@ -6,15 +6,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".DepartmentList">
+
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="SINH VIEN"
-        app:menu="@menu/them_moi_sv" />
+        app:title="KHOA"
+        app:menu="@menu/them_moi_khoa" />
     <EditText
-        android:id="@+id/edtTimKiem"
+        android:id="@+id/edtTimKhoa"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -22,7 +23,7 @@
         android:inputType="text" />
 
     <ListView
-        android:id="@+id/listView"
+        android:id="@+id/lvKhoa"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

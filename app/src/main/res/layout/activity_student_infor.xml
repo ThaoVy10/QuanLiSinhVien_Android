@@ -12,8 +12,9 @@
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="Nhập Thông Tin Sinh Viên"
-        android:textColor="#036FA0"
+        android:textColor="#673AB7"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -22,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Ho và Tên"
+        android:hint="Họ và Tên"
         android:inputType="text" />
 
     <EditText
@@ -46,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Địa Chỉ Email"
+        android:hint="Email"
         android:inputType="text" />
 
     <EditText
@@ -108,6 +109,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Chơi Game" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnCapNhat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cập nhật" />
+
+        <Button
+            android:id="@+id/btnXoa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Xoá" />
     </LinearLayout>
 
 </LinearLayout>

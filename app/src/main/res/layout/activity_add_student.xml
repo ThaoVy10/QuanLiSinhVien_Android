@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Nhập Thông Tin Sinh Viên"
-        android:textColor="#0874A6"
+        android:textColor="#673AB7"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Mã Sinh Viên (edtMaSV)"
-        android:inputType="number" />
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/edtSDT"
@@ -43,11 +43,11 @@
         android:inputType="text" />
 
     <EditText
-        android:id="@+id/edtDiaChi"
+        android:id="@+id/edtEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Địa Chỉ (edtDiaChi)"
+        android:hint="Email (edtEmail)"
         android:inputType="text" />
 
     <EditText
@@ -124,7 +124,7 @@
             android:id="@+id/btnNhap"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nhập" />
+            android:text="Thêm" />
     </LinearLayout>
 
 </LinearLayout>

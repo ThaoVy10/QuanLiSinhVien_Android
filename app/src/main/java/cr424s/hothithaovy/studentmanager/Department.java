@@ -3,10 +3,10 @@ package cr424s.hothithaovy.studentmanager;
 import java.io.Serializable;
 
 public class Department implements Serializable {
-    String maKhoa,tenKhoa, diaChi;
-    int sdt;
+    String maKhoa,tenKhoa, diaChi,sdt;
 
-    public Department(String maKhoa, String tenKhoa, String diaChi, int sdt) {
+
+    public Department(String maKhoa, String tenKhoa, String diaChi, String sdt) {
         this.maKhoa = maKhoa;
         this.tenKhoa = tenKhoa;
         this.diaChi = diaChi;
@@ -37,11 +37,11 @@ public class Department implements Serializable {
         this.diaChi = diaChi;
     }
 
-    public int getSdt() {
+    public String getSdt() {
         return sdt;
     }
 
-    public void setSdt(int sdt) {
+    public void setSdt(String sdt) {
         this.sdt = sdt;
     }
 

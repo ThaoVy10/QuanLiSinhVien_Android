@@ -3,12 +3,14 @@ package cr424s.hothithaovy.studentmanager;
 import java.io.Serializable;
 
 public class SinhVien implements Serializable {
-    private String hoTen, maSV, sdt, email, ngaySinh, khoa, gioitinh, sothich;
+    private String  maSV,hoTen, sdt, email, ngaySinh, khoa, gioitinh, sothich;
 
+    public SinhVien() {
+    }
 
-    public SinhVien(String hoTen, String maSV, String sdt, String email, String ngaySinh, String khoa, String gioitinh, String sothich) {
-        this.hoTen = hoTen;
+    public SinhVien(String maSV, String hoTen, String sdt, String email, String ngaySinh, String khoa, String gioitinh, String sothich) {
         this.maSV = maSV;
+        this.hoTen = hoTen;
         this.sdt = sdt;
         this.email = email;
         this.ngaySinh = ngaySinh;
@@ -84,8 +86,8 @@ public class SinhVien implements Serializable {
     @Override
     public String toString() {
         return "SinhVien{" +
-                "hoTen='" + hoTen + '\'' +
-                ", maSV='" + maSV + '\'' +
+                "maSV='" + maSV + '\'' +
+                ", hoTen='" + hoTen + '\'' +
                 ", sdt='" + sdt + '\'' +
                 ", email='" + email + '\'' +
                 ", ngaySinh='" + ngaySinh + '\'' +

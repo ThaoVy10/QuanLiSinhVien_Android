@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/itemThemMoiSV"
+        android:title="Thêm mới" />
+    <item
+        android:id="@+id/itemXoaTatCa"
+        android:title="Xoá tất cả" />
+    <item
+        android:id="@+id/itemLocMaSV"
+        android:title="Lọc theo MaSV" />
+    <item
+        android:id="@+id/itemLocKhoa"
+        android:title="Lọc theo Khoa" />
+</menu>
