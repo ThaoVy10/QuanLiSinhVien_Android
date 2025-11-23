@@ -26,13 +26,13 @@ public class StudentInforActivity extends AppCompatActivity {
     CheckBox cbMusic,cbReadBook,cbSport,cbGame;
     Button btnCapNhat, btnXoa;
     String[] KHOA = {
-            "Công Nghệ Phần Mềm",
-            "Khoa Học Máy Tính",
+            "Cong Nghe Phan Mem",
+            "Khoa Hoc May Tinh",
             "Big Data",
-            "Trí Tuệ Nhân Tạo",
-            "Hệ Thống Thông Tin",
-            "Mạng Máy Tính",
-            "An Toàn Thông Tin",
+            "Tri Tue Nhan Tao",
+            "He Thong Thong Tin",
+            "Mang May Tinh",
+            "An Toan Thong Tin",
     };
 
     @Override

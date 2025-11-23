@@ -8,9 +8,9 @@
         android:id="@+id/itemXoaTatCa"
         android:title="Xoá tất cả" />
     <item
-        android:id="@+id/itemLocMaSV"
-        android:title="Lọc theo MaSV" />
-    <item
         android:id="@+id/itemLocKhoa"
         android:title="Lọc theo Khoa" />
+    <item
+        android:id="@+id/itemAllSV"
+        android:title="Tất cả SV" />
 </menu>

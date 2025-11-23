@@ -19,6 +19,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.appbar.MaterialToolbar;
+
 import java.util.ArrayList;
 
 import database.SinhVienDB;
@@ -40,6 +42,8 @@ public class DepartmentList extends AppCompatActivity {
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            MaterialToolbar toolbar = findViewById(R.id.topAppBar);
+            setSupportActionBar(toolbar);
             return insets;
         });
         edtTKKhoa = findViewById(R.id.edtTimKhoa);
@@ -91,13 +95,13 @@ public class DepartmentList extends AppCompatActivity {
     }
     private void khoiTaoDuLieu() {
         Department[] defaultDepartments = new Department[]{
-                new Department("CNTT", "Công Nghệ Thông Tin", "Tầng 1, Tòa A", "0123456789"),
-                new Department("KHMT", "Khoa Học Máy Tính", "Tầng 3, Tòa C", "0112233445"),
-                new Department("BD", "Big Data", "Tầng 4, Tòa D", "0223344556"),
-                new Department("TTNT", "Trí Tuệ Nhân Tạo", "Tầng 5, Tòa E", "0334455667"),
-                new Department("HTTT", "Hệ Thống Thông Tin", "Tầng 6, Tòa F", "0445566778"),
-                new Department("MTT", "Mạng Máy Tính", "Tầng 7, Tòa G", "0556677889"),
-                new Department("ATTT", "An Toàn Thông Tin", "Tầng 2, Tòa B", "0667788990")
+                new Department("CNTT", "Cong Nghe Phan Mem", "Tang 1, Toa A", "0123456789"),
+                new Department("KHMT", "Khoa Hoc May Tinh", "Tang 3, Toa C", "0112233445"),
+                new Department("BD", "Big Data", "Tang 4, Toa D", "0223344556"),
+                new Department("TTNT", "Tri Tue Nhan Tao", "Tang 5, Toa E", "0334455667"),
+                new Department("HTTT", "He Thong Thong Tin", "Tang 6, Toa F", "0445566778"),
+                new Department("MTT", "Mang May Tinh", "Tang 7, Toa G", "0556677889"),
+                new Department("ATTT", "An Toan Thong Tin", "Tang 2, Toa B", "0667788990")
         };
         for (Department d : defaultDepartments) {
             db.themKhoa(d);

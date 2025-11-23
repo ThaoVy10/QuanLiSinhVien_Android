@@ -1,18 +1,22 @@
 package cr424s.hothithaovy.studentmanager;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -27,6 +31,9 @@ public class AddStudentActivity extends AppCompatActivity {
     RadioGroup rdGroup;
     RadioButton rdNam, rdNu;
     Spinner spnKhoa;
+    ImageView image;
+    private static final int PICK_IMAGE = 1;
+    private static final int TAKE_PHOTO = 2;
 
     String[] khoa = new String[]{
             "Cong nghe phan mem",
@@ -50,6 +57,34 @@ public class AddStudentActivity extends AppCompatActivity {
         });
 
         spnKhoa = findViewById(R.id.spinnerKhoa);
+        // Hình ảnh
+        image = findViewById(R.id.imgUser);
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String[] options = {"Chọn từ Thư Viện", "Chụp Ảnh"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(AddStudentActivity.this);
+                builder.setTitle("Chọn ảnh đại diện");
+                builder.setItems(options, (dialog, which) -> {
+                    if (which == 0) {
+                        pickImage();
+                    } else {
+                        takePhoto();
+                    }
+                })
+                        .show();
+            }
+            private void pickImage() {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, PICK_IMAGE);
+            }
+
+            private void takePhoto() {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, TAKE_PHOTO);
+            }
+        });
 
         edtHoTen = findViewById(R.id.edtHoTen);
         edtMaSV = findViewById(R.id.edtMaSV);

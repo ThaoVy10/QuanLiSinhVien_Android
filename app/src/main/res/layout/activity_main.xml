@@ -7,12 +7,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
+
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="SINH VIEN"
-        app:menu="@menu/them_moi_sv" />
+        android:background="#673AB7"
+        app:menu="@menu/them_moi_sv"
+        app:title="SINH VIEN" />
     <EditText
         android:id="@+id/edtTimKiem"
         android:layout_width="match_parent"

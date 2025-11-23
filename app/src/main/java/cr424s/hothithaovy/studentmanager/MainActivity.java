@@ -12,12 +12,16 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.appbar.MaterialToolbar;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import database.SinhVienDB;
 
@@ -36,11 +40,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // EdgeToEdge padding
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            MaterialToolbar toolbar = findViewById(R.id.topAppBar);
+            setSupportActionBar(toolbar);
             return insets;
         });
 
@@ -116,23 +120,68 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         if (item.getItemId() == R.id.itemThemMoiSV) {
+            // Thêm sinh viên mới
             Intent intent = new Intent(MainActivity.this, AddStudentActivity.class);
             addStudentLauncher.launch(intent);
+            return true;
         }
-        else if(item.getItemId() == R.id.itemXoaTatCa) {
-            new android.app.AlertDialog.Builder(this)
+
+        else if (item.getItemId() == R.id.itemXoaTatCa) {
+            // Xóa tất cả sinh viên
+            new AlertDialog.Builder(this)
                     .setTitle("Xác nhận")
                     .setMessage("Bạn có chắc chắn muốn xóa tất cả sinh viên?")
                     .setPositiveButton("Có", (dialog, which) -> {
                         db.xoaTatCaSinhVien();        // Xóa toàn bộ trong DB
-                        danhSachSinhVien.clear();    // Xóa danh sách trong MainActivity
-                        sinhVienAdapter.refresh();   // Cập nhật adapter
+                        danhSachSinhVien.clear();      // Xóa danh sách trong MainActivity
+                        sinhVienAdapter.refresh();     // Cập nhật adapter
                         Toast.makeText(MainActivity.this, "Đã xóa tất cả sinh viên!", Toast.LENGTH_SHORT).show();
                     })
                     .setNegativeButton("Không", null)
                     .show();
+            return true;
         }
+        else if(item.getItemId() == R.id.itemAllSV) {
+            // Lay tat ca sinh vien tu DB
+            danhSachSinhVien.clear();
+            danhSachSinhVien.addAll(db.getAllSinhVien());
+            sinhVienAdapter.refresh();
+        }
+
+        else if (item.getItemId() == R.id.itemLocKhoa) {
+            // Hiển thị hộp thoại nhập tên/mã khoa
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Lọc theo khoa");
+
+            final EditText input = new EditText(this);
+            input.setHint("Nhập tên hoặc mã khoa");
+            builder.setView(input);
+
+            builder.setPositiveButton("OK", (dialog, which) -> {
+                String keyword = input.getText().toString().trim();
+                if (!keyword.isEmpty()) {
+                    List<SinhVien> filteredList = db.getSinhVienTheoKhoa(keyword);
+                    danhSachSinhVien.clear();
+                    danhSachSinhVien.addAll(filteredList);
+                    sinhVienAdapter.refresh();
+                } else {
+                    Toast.makeText(this, "Bạn chưa nhập thông tin", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            builder.setNegativeButton("Hủy", (dialog, which) -> {
+                // Nếu hủy, hiển thị lại toàn bộ danh sách
+                danhSachSinhVien.clear();
+                danhSachSinhVien.addAll(db.getAllSinhVien());
+                sinhVienAdapter.refresh();
+            });
+
+            builder.show();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

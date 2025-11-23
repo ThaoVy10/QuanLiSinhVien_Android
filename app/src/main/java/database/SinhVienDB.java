@@ -202,6 +202,36 @@ public class SinhVienDB extends SQLiteOpenHelper {
         db.close();
         return sv;
     }
+    public List<SinhVien> getSinhVienTheoKhoa(String keyword) {
+        SQLiteDatabase db = getReadableDatabase();
+        List<SinhVien> list = new ArrayList<>();
+
+        Cursor cs = db.rawQuery(
+                "SELECT sv.* FROM SinhVien sv LEFT JOIN Khoa k ON sv.maKhoa = k.maKhoa " +
+                        "WHERE sv.maKhoa LIKE ? OR k.tenKhoa LIKE ?",
+                new String[]{"%" + keyword + "%", "%" + keyword + "%"}
+        );
+
+        if(cs.moveToFirst()) {
+            do {
+                SinhVien sv = new SinhVien(
+                        cs.getString(0), // maSV
+                        cs.getString(1), // hoTen
+                        cs.getString(5), // soDienThoai
+                        cs.getString(4), // email
+                        cs.getString(2), // ngaySinh
+                        cs.getString(7), // maKhoa
+                        cs.getString(3), // gioiTinh
+                        cs.getString(6)  // soThich
+                );
+                list.add(sv);
+            } while(cs.moveToNext());
+        }
+
+        cs.close();
+        db.close();
+        return list;
+    }
 
     // Xóa toàn bộ sinh viên
     public void xoaTatCaSinhVien() {
