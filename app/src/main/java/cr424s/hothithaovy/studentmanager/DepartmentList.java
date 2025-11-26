@@ -4,15 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -27,31 +24,31 @@ import database.SinhVienDB;
 
 public class DepartmentList extends AppCompatActivity {
 
-    ListView lvKhoa;
-    TextView edtTKKhoa;
-    SinhVienDB db;
-
+    private ListView lvKhoa;
+    private EditText edtTimKhoa;
     private ArrayList<Department> danhSachKhoa;
-    DepartmentAdapter adapter;
+    private DepartmentAdapter adapter;
+    private SinhVienDB db;
 
-    ActivityResultLauncher<Intent> addDepartmentLauncher;
+    private ActivityResultLauncher<Intent> addDepartmentLauncher;
+    private ActivityResultLauncher<Intent> updateDepartmentLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_department_list);
 
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            MaterialToolbar toolbar = findViewById(R.id.topAppBar);
+            setSupportActionBar(toolbar);
+            return insets;
+        });
 
         lvKhoa = findViewById(R.id.lvKhoa);
-        edtTKKhoa = findViewById(R.id.edtTimKhoa);
-
-        MaterialToolbar toolbar = findViewById(R.id.topAppBar);
-        setSupportActionBar(toolbar);
-
-
+        edtTimKhoa = findViewById(R.id.edtTimKhoa);
         db = new SinhVienDB(this, "QLKhoa", null, 1);
-
 
         danhSachKhoa = new ArrayList<>(db.getAllKhoa());
         if (danhSachKhoa.isEmpty()) {
@@ -59,56 +56,68 @@ public class DepartmentList extends AppCompatActivity {
             danhSachKhoa = new ArrayList<>(db.getAllKhoa());
         }
 
-
         adapter = new DepartmentAdapter(this, R.layout.cell_department_layout, danhSachKhoa);
         lvKhoa.setAdapter(adapter);
 
-
-        edtTKKhoa.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                adapter.filter(s.toString().trim().toLowerCase());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-
-
+        // Launcher thêm khoa
         addDepartmentLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    if (result.getResultCode() == RESULT_OK) {
-                        Toast.makeText(this, "Đã thêm khoa mới!", Toast.LENGTH_SHORT).show();
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        Department newDept = (Department) result.getData().getSerializableExtra("newDept");
+                        if (newDept != null) {
+                            danhSachKhoa.add(newDept);
+                            adapter.refresh();
+                            edtTimKhoa.getText().clear();
+                        }
+                    }
+                }
+        );
 
-                        danhSachKhoa = new ArrayList<>(db.getAllKhoa());
+        // Launcher sửa khoa
+        updateDepartmentLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        danhSachKhoa.clear();
+                        danhSachKhoa.addAll(db.getAllKhoa());
                         adapter.refresh();
                     }
                 }
         );
+
+        lvKhoa.setOnItemClickListener((parent, view, position, id) -> {
+            Department dept = danhSachKhoa.get(position);
+            Intent intent = new Intent(DepartmentList.this, AddDepartment.class);
+            intent.putExtra("k_khoa", dept);
+            updateDepartmentLauncher.launch(intent);
+        });
+
+        edtTimKhoa.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void afterTextChanged(Editable s) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adapter.filter(s.toString().trim().toLowerCase());
+            }
+        });
     }
 
-
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
         getMenuInflater().inflate(R.menu.them_moi_khoa, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(android.view.MenuItem item) {
+
         if (item.getItemId() == R.id.itemTMKhoa) {
-            Intent intent = new Intent(DepartmentList.this, AddDepartment.class);
+            Intent intent = new Intent(this, AddDepartment.class);
             addDepartmentLauncher.launch(intent);
             return true;
-
-        } else if (item.getItemId() == R.id.itemXoaKhoa) {
-
+        }
+        else if (item.getItemId() == R.id.itemXoaKhoa) {
             new AlertDialog.Builder(this)
                     .setTitle("Xác nhận")
                     .setMessage("Bạn có chắc chắn muốn xóa tất cả khoa?")
@@ -116,7 +125,7 @@ public class DepartmentList extends AppCompatActivity {
                         db.xoaTatCaKhoa();
                         danhSachKhoa.clear();
                         adapter.refresh();
-                        Toast.makeText(DepartmentList.this, "Đã xóa tất cả khoa!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Đã xóa tất cả khoa!", Toast.LENGTH_SHORT).show();
                     })
                     .setNegativeButton("Không", null)
                     .show();
@@ -125,7 +134,6 @@ public class DepartmentList extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 
     private void khoiTaoDuLieu() {
         Department[] defaultDepartments = new Department[]{

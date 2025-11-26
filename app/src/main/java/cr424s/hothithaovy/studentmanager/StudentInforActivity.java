@@ -76,7 +76,6 @@ public class StudentInforActivity extends AppCompatActivity {
                     break;
                 }
             }
-            spKhoa.setEnabled(false);
 
             if ("Nam".equalsIgnoreCase(sinhVien.getGioitinh())) rbtNam.setChecked(true);
             else if ("Nữ".equalsIgnoreCase(sinhVien.getGioitinh())) rbtNu.setChecked(true);

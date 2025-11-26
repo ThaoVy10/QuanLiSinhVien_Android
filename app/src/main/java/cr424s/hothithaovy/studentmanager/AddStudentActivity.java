@@ -36,10 +36,13 @@ public class AddStudentActivity extends AppCompatActivity {
     private static final int TAKE_PHOTO = 2;
 
     String[] khoa = new String[]{
-            "Cong nghe phan mem",
-            "An ninh mang",
-            "Tri tue nhan tao",
-            "Big Data"
+            "Cong Nghe Phan Mem",
+            "Khoa Hoc May Tinh",
+            "Big Data",
+            "Tri Tue Nhan Tao",
+            "He Thong Thong Tin",
+            "Mang May Tinh",
+            "An Toan Thong Tin",
     };
 
     Button bntNhap;
@@ -102,11 +105,7 @@ public class AddStudentActivity extends AppCompatActivity {
 
         bntNhap = findViewById(R.id.btnNhap);
 
-        ArrayAdapter<String> adapterKhoa = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_spinner_item,
-                khoa
-        );
+        ArrayAdapter<String> adapterKhoa = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, khoa);
         adapterKhoa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnKhoa.setAdapter(adapterKhoa);
 
