@@ -5,6 +5,8 @@ import java.io.Serializable;
 public class Department implements Serializable {
     String maKhoa,tenKhoa, diaChi,sdt;
 
+    public Department() {
+    }
 
     public Department(String maKhoa, String tenKhoa, String diaChi, String sdt) {
         this.maKhoa = maKhoa;

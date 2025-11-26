@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:context=".StudentInforActivity">
 
@@ -17,6 +17,23 @@
         android:textColor="#673AB7"
         android:textSize="20sp"
         android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imgUser"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/user" />
+    </LinearLayout>
 
     <EditText
         android:id="@+id/hoten"

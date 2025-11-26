@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="50dp"
     android:orientation="vertical"
     tools:context=".DepartmentList">
 
@@ -13,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:title="KHOA"
+        android:background="#673AB7"
         app:menu="@menu/them_moi_khoa" />
     <EditText
         android:id="@+id/edtTimKhoa"

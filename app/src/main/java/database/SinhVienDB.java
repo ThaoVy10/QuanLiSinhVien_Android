@@ -249,5 +249,4 @@ public class SinhVienDB extends SQLiteOpenHelper {
     public boolean kiemTraMaSV(String maSV) {
         return getSinhVienTheoMa(maSV) != null;
     }
-
 }

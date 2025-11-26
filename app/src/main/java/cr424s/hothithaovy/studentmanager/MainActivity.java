@@ -151,12 +151,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         else if (item.getItemId() == R.id.itemLocKhoa) {
-            // Hiển thị hộp thoại nhập tên/mã khoa
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Lọc theo khoa");
 
             final EditText input = new EditText(this);
-            input.setHint("Nhập tên hoặc mã khoa");
+            input.setHint("Nhập tên khoa");
             builder.setView(input);
 
             builder.setPositiveButton("OK", (dialog, which) -> {

@@ -4,41 +4,26 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <EditText
+    <TextView
         android:id="@+id/tenKhoa"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text"
-        android:text="Tên Khoa"
+        android:text="TextView"
         android:textColor="#673AB7"
         android:textSize="24sp"
         android:textStyle="bold" />
 
-    <EditText
+    <TextView
         android:id="@+id/maKhoa"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text"
-        android:text="Mã khoa"
+        android:text="TextView"
         android:textSize="20sp" />
 
-    <EditText
-        android:id="@+id/diaChi"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text"
-        android:text="Địa chỉ"
-        android:textSize="20sp" />
-
-    <EditText
+    <TextView
         android:id="@+id/sdtKhoa"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="number"
-        android:text="SDT Khoa"
+        android:text="TextView"
         android:textSize="20sp" />
 </LinearLayout>

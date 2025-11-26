@@ -10,20 +10,21 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class DepartmentAdapter extends BaseAdapter {
+public class DepartmentAdapter extends BaseAdapter {
 
     private Context context;
     private int layout;
-    private List<SinhVien> displayList;
-    private List<SinhVien> fullList;
+    private List<Department> displayList;
+    private List<Department> fullList;
 
-    public DepartmentAdapter(Context context, int layout, ArrayList<SinhVien> list) {
+    public DepartmentAdapter(Context context, int layout, ArrayList<Department> list) {
         this.context = context;
         this.layout = layout;
 
         this.fullList = list;
         this.displayList = new ArrayList<>(list);
     }
+
     @Override
     public int getCount() {
         return displayList.size();
@@ -42,26 +43,46 @@ public abstract class DepartmentAdapter extends BaseAdapter {
     private static class ViewHolder {
         TextView tvTenKhoa, tvMaKhoa, tvSDTKhoa;
     }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        DepartmentAdapter.ViewHolder holder;
+        ViewHolder holder;
+
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(layout, parent, false);
-            holder = new DepartmentAdapter.ViewHolder();
+            holder = new ViewHolder();
             holder.tvTenKhoa = convertView.findViewById(R.id.tenKhoa);
             holder.tvMaKhoa = convertView.findViewById(R.id.maKhoa);
             holder.tvSDTKhoa = convertView.findViewById(R.id.sdtKhoa);
             convertView.setTag(holder);
         } else {
-            holder = (DepartmentAdapter.ViewHolder) convertView.getTag();
+            holder = (ViewHolder) convertView.getTag();
         }
 
-        SinhVien sv = displayList.get(position);
-        holder.tvTenKhoa.setText(sv.getHoTen());
-        holder.tvMaKhoa.setText(sv.getMaSV());
-        holder.tvSDTKhoa.setText(sv.getSdt());
+        Department dp = displayList.get(position);
+        holder.tvTenKhoa.setText(dp.getTenKhoa());
+        holder.tvMaKhoa.setText(dp.getMaKhoa());
+        holder.tvSDTKhoa.setText(dp.getSdt());
 
         return convertView;
+    }
+
+    public void filter(String keyword) {
+        displayList.clear();
+
+        if (keyword.isEmpty()) {
+            displayList.addAll(fullList);
+        } else {
+            keyword = keyword.toLowerCase();
+            for (Department dp : fullList) {
+                if (dp.getMaKhoa().toLowerCase().contains(keyword)
+                        || dp.getTenKhoa().toLowerCase().contains(keyword)) {
+                    displayList.add(dp);
+                }
+            }
+        }
+
+        notifyDataSetChanged();
     }
 
     public void refresh() {
