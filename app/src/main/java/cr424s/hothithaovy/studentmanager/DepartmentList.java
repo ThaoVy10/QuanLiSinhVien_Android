@@ -38,6 +38,7 @@ public class DepartmentList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_department_list);
 
+        // Toolbar và padding hệ thống
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -50,6 +51,7 @@ public class DepartmentList extends AppCompatActivity {
         edtTimKhoa = findViewById(R.id.edtTimKhoa);
         db = new SinhVienDB(this, "QLKhoa", null, 1);
 
+        // Load danh sách khoa
         danhSachKhoa = new ArrayList<>(db.getAllKhoa());
         if (danhSachKhoa.isEmpty()) {
             khoiTaoDuLieu();
@@ -59,40 +61,50 @@ public class DepartmentList extends AppCompatActivity {
         adapter = new DepartmentAdapter(this, R.layout.cell_department_layout, danhSachKhoa);
         lvKhoa.setAdapter(adapter);
 
-        // Launcher thêm khoa
+        // Thêm mới khoa
         addDepartmentLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         Department newDept = (Department) result.getData().getSerializableExtra("newDept");
                         if (newDept != null) {
+                            db.themKhoa(newDept);
                             danhSachKhoa.add(newDept);
-                            adapter.refresh();
+                            adapter.refreshData();
                             edtTimKhoa.getText().clear();
                         }
                     }
                 }
         );
 
-        // Launcher sửa khoa
+        // Cập nhật khoa
         updateDepartmentLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    if (result.getResultCode() == RESULT_OK) {
-                        danhSachKhoa.clear();
-                        danhSachKhoa.addAll(db.getAllKhoa());
-                        adapter.refresh();
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        Department updatedDept = (Department) result.getData().getSerializableExtra("khoa_updated");
+                        if (updatedDept != null) {
+                            for (int i = 0; i < danhSachKhoa.size(); i++) {
+                                if (danhSachKhoa.get(i).getMaKhoa().equals(updatedDept.getMaKhoa())) {
+                                    danhSachKhoa.set(i, updatedDept);
+                                    db.suaKhoa(updatedDept);
+                                    break;
+                                }
+                            }
+                            adapter.refreshData();
+                        }
                     }
                 }
         );
 
         lvKhoa.setOnItemClickListener((parent, view, position, id) -> {
             Department dept = danhSachKhoa.get(position);
-            Intent intent = new Intent(DepartmentList.this, AddDepartment.class);
+            Intent intent = new Intent(DepartmentList.this, DepartmentInforActivity.class);
             intent.putExtra("k_khoa", dept);
             updateDepartmentLauncher.launch(intent);
         });
 
+        // Filter theo EditText
         edtTimKhoa.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override public void afterTextChanged(Editable s) {}
@@ -111,27 +123,24 @@ public class DepartmentList extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(android.view.MenuItem item) {
-
         if (item.getItemId() == R.id.itemTMKhoa) {
             Intent intent = new Intent(this, AddDepartment.class);
             addDepartmentLauncher.launch(intent);
             return true;
-        }
-        else if (item.getItemId() == R.id.itemXoaKhoa) {
+        } else if (item.getItemId() == R.id.itemXoaKhoa) {
             new AlertDialog.Builder(this)
                     .setTitle("Xác nhận")
                     .setMessage("Bạn có chắc chắn muốn xóa tất cả khoa?")
                     .setPositiveButton("Có", (dialog, which) -> {
                         db.xoaTatCaKhoa();
                         danhSachKhoa.clear();
-                        adapter.refresh();
+                        adapter.refreshData();
                         Toast.makeText(this, "Đã xóa tất cả khoa!", Toast.LENGTH_SHORT).show();
                     })
                     .setNegativeButton("Không", null)
                     .show();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

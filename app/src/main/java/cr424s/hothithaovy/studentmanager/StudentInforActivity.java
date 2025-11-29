@@ -1,6 +1,7 @@
 package cr424s.hothithaovy.studentmanager;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -17,6 +18,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.ArrayList;
+
 import database.SinhVienDB;
 
 public class StudentInforActivity extends AppCompatActivity {
@@ -24,16 +27,7 @@ public class StudentInforActivity extends AppCompatActivity {
     Spinner spKhoa;
     RadioButton rbtNam, rbtNu;
     CheckBox cbMusic,cbReadBook,cbSport,cbGame;
-    Button btnCapNhat, btnXoa;
-    String[] KHOA = {
-            "Cong Nghe Phan Mem",
-            "Khoa Hoc May Tinh",
-            "Big Data",
-            "Tri Tue Nhan Tao",
-            "He Thong Thong Tin",
-            "Mang May Tinh",
-            "An Toan Thong Tin",
-    };
+    Button btnCapNhat, btnXoa, btnGoi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +54,12 @@ public class StudentInforActivity extends AppCompatActivity {
         rbtNu = findViewById(R.id.nu);
 
         spKhoa = findViewById(R.id.khoa);
-        ArrayAdapter<String> adapterKhoa = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, KHOA);
+        SinhVienDB dbK = new SinhVienDB(this, "QLKhoa", null, 1);
+        ArrayList<Department> danhSachKhoa = new ArrayList<>(dbK.getAllKhoa());
+
+        ArrayAdapter<Department> adapterKhoa =
+                new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, danhSachKhoa);
+        adapterKhoa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spKhoa.setAdapter(adapterKhoa);
 
         SinhVien sinhVien = (SinhVien) getIntent().getSerializableExtra("k_sinhvien");
@@ -70,8 +69,8 @@ public class StudentInforActivity extends AppCompatActivity {
             edtMaSV.setText(sinhVien.getMaSV());
             edtNgaySinh.setText(sinhVien.getNgaySinh());
             edtMail.setText(sinhVien.getEmail());
-            for (int i = 0; i < KHOA.length; i++) {
-                if (KHOA[i].equals(sinhVien.getKhoa())) {
+            for (int i = 0; i < danhSachKhoa.size(); i++) {
+                if (danhSachKhoa.get(i).getTenKhoa().equals(sinhVien.getKhoa())) {
                     spKhoa.setSelection(i);
                     break;
                 }
@@ -86,6 +85,15 @@ public class StudentInforActivity extends AppCompatActivity {
             cbSport.setChecked(st.contains("Thể thao"));
             cbGame.setChecked(st.contains("Chơi game"));
         }
+        btnGoi = findViewById(R.id.btnGoi);
+        btnGoi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(Intent.ACTION_DIAL);
+                myIntent.setData(Uri.parse("tel:"+edtSdt.getText().toString()));
+                startActivity(myIntent);
+            }
+        });
         btnCapNhat = findViewById(R.id.btnCapNhat);
         btnCapNhat.setOnClickListener(new View.OnClickListener() {
             @Override

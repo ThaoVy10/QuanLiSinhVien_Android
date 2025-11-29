@@ -14,13 +14,12 @@ public class DepartmentAdapter extends BaseAdapter {
 
     private Context context;
     private int layout;
-    private List<Department> displayList;
     private List<Department> fullList;
+    private List<Department> displayList;
 
     public DepartmentAdapter(Context context, int layout, ArrayList<Department> list) {
         this.context = context;
         this.layout = layout;
-
         this.fullList = list;
         this.displayList = new ArrayList<>(list);
     }
@@ -85,7 +84,7 @@ public class DepartmentAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void refresh() {
+    public void refreshData() {
         displayList.clear();
         displayList.addAll(fullList);
         notifyDataSetChanged();

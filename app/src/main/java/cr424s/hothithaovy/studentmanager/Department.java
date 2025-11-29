@@ -49,12 +49,7 @@ public class Department implements Serializable {
 
     @Override
     public String toString() {
-        return "Department{" +
-                "maKhoa='" + maKhoa + '\'' +
-                ", tenKhoa='" + tenKhoa + '\'' +
-                ", diaChi='" + diaChi + '\'' +
-                ", sdt=" + sdt +
-                '}';
+        return tenKhoa;
     }
 }
 

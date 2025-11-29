@@ -22,6 +22,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.ArrayList;
+
 import database.SinhVienDB;
 
 public class AddStudentActivity extends AppCompatActivity {
@@ -35,17 +37,9 @@ public class AddStudentActivity extends AppCompatActivity {
     private static final int PICK_IMAGE = 1;
     private static final int TAKE_PHOTO = 2;
 
-    String[] khoa = new String[]{
-            "Cong Nghe Phan Mem",
-            "Khoa Hoc May Tinh",
-            "Big Data",
-            "Tri Tue Nhan Tao",
-            "He Thong Thong Tin",
-            "Mang May Tinh",
-            "An Toan Thong Tin",
-    };
 
     Button bntNhap;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +54,6 @@ public class AddStudentActivity extends AppCompatActivity {
         });
 
         spnKhoa = findViewById(R.id.spinnerKhoa);
-        // Hình ảnh
         image = findViewById(R.id.imgUser);
         image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,8 +97,11 @@ public class AddStudentActivity extends AppCompatActivity {
         cbChoiGame = findViewById(R.id.cbChoiGame);
 
         bntNhap = findViewById(R.id.btnNhap);
+        SinhVienDB dbK = new SinhVienDB(this, "QLKhoa", null, 1);
+        ArrayList<Department> danhSachKhoa = new ArrayList<>(dbK.getAllKhoa());
 
-        ArrayAdapter<String> adapterKhoa = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, khoa);
+        ArrayAdapter<Department> adapterKhoa =
+                new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, danhSachKhoa);
         adapterKhoa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnKhoa.setAdapter(adapterKhoa);
 
@@ -146,8 +142,6 @@ public class AddStudentActivity extends AppCompatActivity {
                 edtMaSV.requestFocus(); // focus vào ô Mã SV
                 return;
             }
-
-            // Gán dữ liệu vào đối tượng SinhVien
             sv.setMaSV(maSV);
             sv.setHoTen(hoTen);
             sv.setNgaySinh(ngaySinh);
@@ -163,7 +157,7 @@ public class AddStudentActivity extends AppCompatActivity {
             if (kq > 0) {
                 Toast.makeText(AddStudentActivity.this, "Thêm sinh viên thành công!", Toast.LENGTH_SHORT).show();
                 Intent result = new Intent();
-                result.putExtra("newSV", sv); // gửi đối tượng qua
+                result.putExtra("newSV", sv);
                 setResult(RESULT_OK, result);
                 finish();
             } else {
